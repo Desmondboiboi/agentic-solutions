@@ -3,53 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agentic Solutions | Secure Portal</title>
+    <title>Agentic Solutions | Educational Automation</title>
     <style>
         :root {
-            --primary-blue: #0047AB; 
+            --primary-blue: #0047AB;
             --accent-blue: #0056d2;
             --dark-text: #2c3e50;
             --light-bg: #f4f7fe;
             --white: #ffffff;
+            --error-red: #ff4d4d;
+            --success-green: #27ae60;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
-        body { background-color: var(--white); color: var(--dark-text); line-height: 1.6; }
-
-        /* AUTHENTICATION OVERLAY */
-        #auth-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--primary-blue); display: flex; justify-content: center;
-            align-items: center; z-index: 2000; transition: 0.5s;
-        }
-
-        .auth-card {
-            background: white; padding: 40px; border-radius: 15px;
-            width: 100%; max-width: 400px; box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-            text-align: center;
-        }
-
-        .auth-card img { height: 60px; margin-bottom: 20px; }
-        .auth-card h2 { margin-bottom: 20px; color: var(--primary-blue); }
-        
-        .auth-card input {
-            width: 100%; padding: 12px; margin-bottom: 15px;
-            border: 1px solid #ddd; border-radius: 8px;
-        }
-
-        .auth-card button {
-            width: 100%; padding: 12px; background: var(--primary-blue);
-            color: white; border: none; border-radius: 8px; cursor: pointer;
-            font-weight: bold; font-size: 1rem;
-        }
-
-        .toggle-link {
-            margin-top: 15px; display: block; font-size: 0.85rem;
-            color: var(--primary-blue); text-decoration: underline; cursor: pointer;
-        }
-
-        /* MAIN CONTENT (Hidden by default) */
-        #main-site { display: none; }
+        body { background-color: var(--white); color: var(--dark-text); line-height: 1.6; scroll-behavior: smooth; }
 
         /* NAVIGATION */
         nav {
@@ -59,158 +26,277 @@
         }
         .logo-area { display: flex; align-items: center; gap: 10px; }
         .logo-area img { height: 40px; }
-        .brand-name { font-weight: 800; color: var(--primary-blue); }
+        .brand-name { font-weight: 800; color: var(--primary-blue); font-size: 1.3rem; }
         nav ul { display: flex; list-style: none; gap: 20px; }
         nav ul li a { text-decoration: none; color: var(--dark-text); font-weight: 600; font-size: 0.9rem; }
 
-        /* SYSTEM STYLING */
-        section { padding: 60px 8%; }
-        .system-container { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
-        .system-card {
-            background: var(--light-bg); padding: 30px; border-radius: 15px;
-            border-top: 5px solid var(--primary-blue);
+        /* PUBLIC CONTENT */
+        header.hero {
+            padding: 100px 8%; background: linear-gradient(135deg, #eef2ff 0%, #ffffff 100%);
+            text-align: center;
+        }
+        .hero h1 { font-size: 3rem; color: var(--primary-blue); margin-bottom: 15px; }
+        .hero p { max-width: 750px; margin: 0 auto 30px; font-size: 1.15rem; color: #555; }
+        
+        .cta-btn {
+            padding: 15px 40px; background: var(--primary-blue); color: white;
+            border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 1rem;
+            transition: 0.3s;
+        }
+        .cta-btn:hover { background: var(--accent-blue); transform: scale(1.05); }
+
+        section { padding: 80px 8%; border-bottom: 1px solid #eee; }
+        .section-title { text-align: center; margin-bottom: 40px; color: var(--primary-blue); }
+
+        .about-box {
+            background: var(--light-bg); padding: 40px; border-radius: 15px;
+            border-left: 6px solid var(--primary-blue); max-width: 850px; margin: 0 auto;
         }
 
-        .result-box { margin-top: 20px; padding: 15px; background: white; border-radius: 8px; display: none; }
-        .enrollment-list { margin-top: 20px; background: white; border-radius: 8px; padding: 10px; max-height: 200px; overflow-y: auto; }
-        
-        /* TEAM SECTION */
-        .team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; }
-        .member { text-align: center; padding: 15px; border: 1px solid #eee; border-radius: 10px; }
-        .member span { display: block; font-size: 0.7rem; color: #888; font-family: monospace; }
+        .team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
+        .member { text-align: center; padding: 20px; border: 1px solid #eee; border-radius: 12px; background: white; }
+        .member span { display: block; font-size: 0.8rem; color: #888; font-family: monospace; margin-bottom: 5px;}
 
-        footer { text-align: center; padding: 40px; font-size: 0.8rem; color: #777; border-top: 1px solid #eee; }
+        /* AUTH POPUP */
+        #auth-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 71, 171, 0.9); display: none; justify-content: center;
+            align-items: center; z-index: 2000;
+        }
+        .auth-card {
+            background: white; padding: 40px; border-radius: 15px; width: 90%;
+            max-width: 400px; text-align: center; position: relative;
+        }
+        .close-btn { position: absolute; top: 15px; right: 20px; font-size: 1.5rem; cursor: pointer; color: #999; }
+        .auth-card input { width: 100%; padding: 12px; margin-bottom: 5px; border: 1px solid #ccc; border-radius: 8px; }
+        
+        /* ERROR MESSAGE STYLING */
+        .error-msg { 
+            color: var(--error-red); 
+            font-size: 0.8rem; 
+            display: none; 
+            margin-bottom: 15px; 
+            font-weight: bold;
+            background: #ffe6e6;
+            padding: 5px;
+            border-radius: 4px;
+        }
+        
+        .toggle-text { font-size: 0.85rem; color: #666; cursor: pointer; text-decoration: underline; margin-top: 10px; display: block;}
+
+        /* PROTECTED SYSTEMS */
+        #systems-portal { display: none; background: #f9f9f9; }
+        .system-container { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+        .system-card {
+            background: white; padding: 30px; border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-top: 5px solid var(--primary-blue);
+        }
+        .system-card input { width: 100%; padding: 12px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 8px; }
+        
+        .result-box { margin-top: 20px; padding: 15px; background: #eef2ff; border-radius: 8px; text-align: center; display: none; }
+        .enrollment-list { margin-top: 20px; border-top: 1px solid #eee; padding-top: 15px; max-height: 250px; overflow-y: auto; }
+        .student-entry { display: flex; justify-content: space-between; padding: 10px; border-bottom: 1px solid #f5f5f5; font-size: 0.9rem; }
+
+        footer { text-align: center; padding: 50px; font-size: 0.85rem; color: #777; background: #fff; border-top: 1px solid #eee; }
 
         @media (max-width: 900px) { .system-container { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
 
-    <!-- SIGN UP / LOGIN OVERLAY -->
+    <nav>
+        <div class="logo-area">
+            <img src="logo.jpg" alt="Logo">
+            <span class="brand-name">Agentic Solutions</span>
+        </div>
+        <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#team">Team</a></li>
+            <li id="login-nav"><a href="javascript:void(0)" onclick="openAuth(true)">Login / Sign Up</a></li>
+            <li id="logout-nav" style="display:none;"><a href="javascript:void(0)" onclick="logout()">Logout</a></li>
+        </ul>
+    </nav>
+
+    <!-- PUBLIC CONTENT -->
+    <header class="hero" id="home">
+        <h1>Educational Automation Hub</h1>
+        <p>Providing intelligent agent-based solutions for university administration.</p>
+        <button class="cta-btn" onclick="openAuth(true)">Register to Access Tools</button>
+    </header>
+
+    <section id="about">
+        <div class="section-title"><h2>Our Mission</h2></div>
+        <div class="about-box">
+            <p>We are a software house building systems that streamline administrative workflows. Our tools handle the logic, so you can handle the teaching.</p>
+        </div>
+    </section>
+
+    <section id="team">
+        <div class="section-title"><h2>Project Team</h2></div>
+        <div class="team-grid">
+            <div class="member"><span>253UT256JW</span><strong>Desmond Choi</strong></div>
+            <div class="member"><span>253UT256KF</span><strong>Lim Yi An</strong></div>
+            <div class="member"><span>253UT256KG</span><strong>David Chong</strong></div>
+            <div class="member"><span>253UT256JV</span><strong>Koh Meng Wen</strong></div>
+            <div class="member"><span>261UT26134</span><strong>Lim See Yuan</strong></div>
+            <div class="member"><span>261UT2612Y</span><strong>Sing Wen Jie</strong></div>
+        </div>
+    </section>
+
+    <!-- AUTH POPUP -->
     <div id="auth-overlay">
         <div class="auth-card">
-            <img src="logo.jpg" alt="Logo">
-            <h2 id="auth-title">Welcome Back</h2>
+            <span class="close-btn" onclick="openAuth(false)">&times;</span>
+            <img src="logo.jpg" alt="Logo" style="height:50px; margin-bottom:15px;">
+            <h2 id="auth-title">Create Account</h2>
             
-            <div id="signup-fields" style="display: none;">
-                <input type="text" placeholder="Full Name">
-            </div>
+            <input type="email" id="authEmail" placeholder="Email Address (e.g. name@email.com)">
             
-            <input type="email" id="userEmail" placeholder="Email Address">
-            <input type="password" placeholder="Password">
+            <!-- THE IMPORTANT EMAIL ERROR MESSAGE -->
+            <div id="emailError" class="error-msg">⚠️ INVALID EMAIL: You must include the '@' symbol.</div>
             
-            <button onclick="login()">Access Systems</button>
+            <input type="password" id="authPass" placeholder="Password">
             
-            <span class="toggle-link" id="auth-toggle" onclick="toggleAuth()">Don't have an account? Sign Up</span>
+            <button class="cta-btn" id="auth-btn" style="width:100%;" onclick="handleAuthAction()">Sign Up Now</button>
+            <span class="toggle-text" id="auth-toggle" onclick="toggleAuthMode()">Already have an account? Login</span>
         </div>
     </div>
 
-    <!-- MAIN WEBSITE CONTENT -->
-    <div id="main-site">
-        <nav>
-            <div class="logo-area">
-                <img src="logo.jpg" alt="Logo">
-                <span class="brand-name">Agentic Solutions</span>
-            </div>
-            <ul>
-                <li><a href="#" onclick="logout()">Logout</a></li>
-            </ul>
-        </nav>
-
-        <section id="systems">
-            <div style="text-align: center; margin-bottom: 40px;">
-                <h2 style="color:var(--primary-blue)">University Management Dashboard</h2>
-                <p>Authenticated Session: Active</p>
-            </div>
-
-            <div class="system-container">
-                <!-- GRADE CALCULATOR -->
-                <div class="system-card">
-                    <h3>Grade Calculator</h3>
-                    <input type="text" id="calcName" placeholder="Student Name">
-                    <input type="number" id="calcScore" placeholder="Score (0-100)">
-                    <button onclick="calculateGrade()" style="background:var(--primary-blue); color:white; border:none; padding:10px; border-radius:5px; width:100%; cursor:pointer;">Process Grade</button>
-                    <div id="gradeResult" class="result-box">
-                        <h4 id="resName"></h4>
-                        <p>Grade: <strong id="resLetter" style="font-size: 1.5rem; color: var(--primary-blue);"></strong></p>
-                    </div>
-                </div>
-
-                <!-- ENROLLMENT -->
-                <div class="system-card">
-                    <h3>Enrollment System</h3>
-                    <input type="text" id="enrolID" placeholder="Student ID">
-                    <input type="text" id="enrolName" placeholder="Student Name">
-                    <button onclick="enrollStudent()" style="background:var(--primary-blue); color:white; border:none; padding:10px; border-radius:5px; width:100%; cursor:pointer;">Register Student</button>
-                    <div class="enrollment-list" id="enrolList"></div>
+    <!-- PROTECTED PORTAL -->
+    <section id="systems-portal">
+        <div class="section-title">
+            <h2>Management Dashboard</h2>
+            <p style="color:var(--success-green); font-size: 0.9rem;">✓ Authenticated Access Granted</p>
+        </div>
+        <div class="system-container">
+            <!-- GRADE TOOL -->
+            <div class="system-card">
+                <h3>Grade Calculator</h3>
+                <input type="text" id="calcName" placeholder="Student Name">
+                <input type="number" id="calcScore" placeholder="Score (0-100)">
+                <div id="gradeError" class="error-msg">Error: Score must be between 0 and 100.</div>
+                <button class="cta-btn" style="width:100%;" onclick="processGrade()">Calculate</button>
+                <div id="gradeResult" class="result-box">
+                    <h4 id="resName"></h4>
+                    <p>Grade: <strong id="resLetter" style="font-size:1.8rem; color:var(--primary-blue);"></strong></p>
                 </div>
             </div>
-        </section>
-
-        <section id="team">
-            <h2 style="text-align:center; color:var(--primary-blue); margin-bottom:30px;">Our Team</h2>
-            <div class="team-grid">
-                <div class="member"><span>253UT256JW</span><strong>Desmond Choi</strong></div>
-                <div class="member"><span>253UT256KF</span><strong>Lim Yi An</strong></div>
-                <div class="member"><span>253UT256KG</span><strong>David Chong</strong></div>
-                <div class="member"><span>253UT256JV</span><strong>Koh Meng Wen</strong></div>
-                <div class="member"><span>261UT26134</span><strong>Lim See Yuan</strong></div>
-                <div class="member"><span>261UT2612Y</span><strong>Sing Wen Jie</strong></div>
+            <!-- ENROLLMENT TOOL -->
+            <div class="system-card">
+                <h3>Enrollment System</h3>
+                <input type="text" id="enrolID" placeholder="Student ID">
+                <div id="enrolError" class="error-msg">Error: This ID is already registered.</div>
+                <input type="text" id="enrolName" placeholder="Full Name">
+                <button class="cta-btn" style="width:100%;" onclick="processEnrollment()">Enroll</button>
+                <div class="enrollment-list" id="enrolList"></div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <footer>
-            <p>&copy; 2024 Agentic Solutions | MMU Project</p>
-        </footer>
-    </div>
+    <!-- CONTACT -->
+    <section id="contact" style="background: var(--primary-blue); color: white; text-align: center; border:none;">
+        <h2 style="color:white; margin-bottom:10px;">Contact Us</h2>
+        <p>desmond.choi.lip@student.mmu.edu.my | +60 17-728 2780</p>
+    </section>
+
+    <footer><p>&copy; 2024 Agentic Solutions | MMU Project</p></footer>
 
     <script>
-        // AUTHENTICATION LOGIC
-        let isLoginView = true;
+        let isLoginMode = false;
 
-        function toggleAuth() {
-            isLoginView = !isLoginView;
-            document.getElementById('auth-title').innerText = isLoginView ? "Welcome Back" : "Create Account";
-            document.getElementById('auth-toggle').innerText = isLoginView ? "Don't have an account? Sign Up" : "Already have an account? Login";
-            document.getElementById('signup-fields').style.display = isLoginView ? "none" : "block";
+        function openAuth(show) { 
+            document.getElementById('auth-overlay').style.display = show ? 'flex' : 'none';
+            document.getElementById('emailError').style.display = 'none'; 
         }
 
-        function login() {
-            const email = document.getElementById('userEmail').value;
-            if(email === "") {
-                alert("Please enter your credentials");
-                return;
+        function toggleAuthMode() {
+            isLoginMode = !isLoginMode;
+            document.getElementById('auth-title').innerText = isLoginMode ? "User Login" : "Create Account";
+            document.getElementById('auth-btn').innerText = isLoginMode ? "Login Now" : "Sign Up Now";
+            document.getElementById('auth-toggle').innerText = isLoginMode ? "New here? Create Account" : "Already have an account? Login";
+            document.getElementById('emailError').style.display = 'none';
+        }
+
+        // --- THE CRITICAL FIX ---
+        function handleAuthAction() {
+            const email = document.getElementById('authEmail').value.trim();
+            const pass = document.getElementById('authPass').value.trim();
+            const emailErr = document.getElementById('emailError');
+
+            // 1. Check for empty fields first
+            if(!email || !pass) { 
+                alert("Both email and password are required."); 
+                return; 
             }
-            // Transition effect
-            document.getElementById('auth-overlay').style.opacity = "0";
-            setTimeout(() => {
-                document.getElementById('auth-overlay').style.display = "none";
-                document.getElementById('main-site').style.display = "block";
-            }, 500);
+
+            // 2. CHECK FOR @ SYMBOL - If missing, SHOW ERROR and STOP THE FUNCTION IMMEDIATELY
+            if (email.indexOf('@') === -1) {
+                emailErr.style.display = 'block'; 
+                return; // THIS PREVENTS THE REST OF THE CODE FROM RUNNING
+            }
+            
+            // If we reach here, the email HAS an @
+            emailErr.style.display = 'none'; 
+
+            let users = JSON.parse(localStorage.getItem('users')) || {};
+
+            if(isLoginMode) {
+                if(users[email] && users[email] === pass) { enterSystem(); } 
+                else { alert("Login Failed: Incorrect email or password."); }
+            } else {
+                if(users[email]) { alert("Error: Email is already registered."); } 
+                else {
+                    users[email] = pass;
+                    localStorage.setItem('users', JSON.stringify(users));
+                    alert("SUCCESS: Account created for " + email + ". Now please log in.");
+                    toggleAuthMode();
+                }
+            }
         }
 
-        function logout() {
-            location.reload(); // Simple way to lock the site again
+        function enterSystem() {
+            openAuth(false);
+            document.getElementById('systems-portal').style.display = 'block';
+            document.getElementById('login-nav').style.display = 'none';
+            document.getElementById('logout-nav').style.display = 'block';
+            loadEnrollments();
+            window.location.hash = "systems-portal";
         }
 
-        // SYSTEM LOGIC
-        function calculateGrade() {
+        function logout() { location.reload(); }
+
+        function processGrade() {
             const name = document.getElementById('calcName').value;
-            const score = document.getElementById('calcScore').value;
-            let grade = score >= 80 ? "A" : score >= 70 ? "B" : score >= 60 ? "C" : "F";
+            const scoreIn = document.getElementById('calcScore').value;
+            const score = parseFloat(scoreIn);
+            const err = document.getElementById('gradeError');
+            const res = document.getElementById('gradeResult');
+            if(scoreIn === "" || score < 0 || score > 100) { err.style.display = 'block'; res.style.display = 'none'; return; }
+            err.style.display = 'none';
+            let grade = score >= 80 ? "A" : score >= 70 ? "B" : score >= 60 ? "C" : score >= 50 ? "D" : "F";
             document.getElementById('resName').innerText = name;
             document.getElementById('resLetter').innerText = grade;
-            document.getElementById('gradeResult').style.display = "block";
+            res.style.display = 'block';
         }
 
-        function enrollStudent() {
-            const id = document.getElementById('enrolID').value;
-            const name = document.getElementById('enrolName').value;
+        function processEnrollment() {
+            const id = document.getElementById('enrolID').value.trim();
+            const name = document.getElementById('enrolName').value.trim();
+            const err = document.getElementById('enrolError');
+            if(!id || !name) return;
+            let students = JSON.parse(localStorage.getItem('students')) || [];
+            if(students.some(s => s.id === id)) { err.style.display = 'block'; return; }
+            err.style.display = 'none';
+            students.push({id, name});
+            localStorage.setItem('students', JSON.stringify(students));
+            loadEnrollments();
+        }
+
+        function loadEnrollments() {
             const list = document.getElementById('enrolList');
-            const entry = document.createElement('div');
-            entry.innerHTML = `<strong>${id}</strong> - ${name}`;
-            entry.style.padding = "5px";
-            list.prepend(entry);
+            const students = JSON.parse(localStorage.getItem('students')) || [];
+            list.innerHTML = students.map(s => `<div class="student-entry"><span><strong>${s.id}</strong> - ${s.name}</span><span style="color:green">✓ Registered</span></div>`).join('');
         }
     </script>
 </body>
