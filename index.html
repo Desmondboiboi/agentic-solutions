@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agentic Solutions | Educational Automation</title>
+    <style>
+        /* BRANDING & COLOR SCHEME */
+        :root {
+            --primary-blue: #0047AB; /* From your logo */
+            --accent-blue: #0056d2;
+            --dark-text: #2c3e50;
+            --light-bg: #f8f9fa;
+            --white: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        body {
+            line-height: 1.7;
+            color: var(--dark-text);
+            background-color: var(--white);
+            scroll-behavior: smooth;
+        }
+
+        /* NAVIGATION */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 8%;
+            background: var(--white);
+            box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-area img {
+            height: 45px;
+        }
+
+        .brand-name {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--primary-blue);
+            letter-spacing: -0.5px;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: var(--dark-text);
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: 0.3s;
+        }
+
+        nav ul li a:hover {
+            color: var(--primary-blue);
+        }
+
+        /* HERO SECTION */
+        .hero {
+            padding: 100px 8% 80px;
+            background: linear-gradient(135deg, #f0f4ff 0%, #ffffff 100%);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            min-height: 70vh;
+        }
+
+        .hero-content {
+            max-width: 600px;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            color: var(--primary-blue);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            color: #555;
+        }
+
+        .cta-button {
+            padding: 15px 35px;
+            background: var(--primary-blue);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(0, 71, 171, 0.3);
+            transition: 0.3s;
+        }
+
+        .cta-button:hover {
+            background: var(--accent-blue);
+            transform: translateY(-2px);
+        }
+
+        /* ABOUT SECTION */
+        section {
+            padding: 100px 8%;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-header h2 {
+            font-size: 2.2rem;
+            color: var(--primary-blue);
+            margin-bottom: 15px;
+        }
+
+        .about-box {
+            background: var(--light-bg);
+            padding: 50px;
+            border-radius: 20px;
+            border-left: 8px solid var(--primary-blue);
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        /* PRODUCTS & SERVICES */
+        .services-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .service-card {
+            padding: 40px;
+            border: 1px solid #eee;
+            border-radius: 15px;
+            transition: 0.4s;
+            background: white;
+        }
+
+        .service-card:hover {
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border-color: var(--primary-blue);
+        }
+
+        .service-card h3 {
+            color: var(--primary-blue);
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+
+        /* CONTACT SECTION */
+        #contact {
+            background: var(--primary-blue);
+            color: white;
+            text-align: center;
+        }
+
+        #contact h2 { color: white; }
+
+        .contact-grid {
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .contact-item {
+            font-size: 1.1rem;
+        }
+
+        /* FOOTER */
+        footer {
+            padding: 30px;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #888;
+            border-top: 1px solid #eee;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .hero { flex-direction: column; text-align: center; padding-top: 50px; }
+            nav ul { display: none; } /* Simplified for mobile */
+            .hero h1 { font-size: 2.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 1. HEADER: Business Name & Logo -->
+    <nav>
+        <div class="logo-area">
+            <img src="logo.png" alt="Agentic Solutions Logo">
+            <span class="brand-name">Agentic Solutions</span>
+        </div>
+        <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- HERO / HOME -->
+    <header class="hero" id="home">
+        <div class="hero-content">
+            <h1>Automating the Future of Education</h1>
+            <p>Empowering educators with intelligent agents that handle the paperwork, so you can handle the teaching.</p>
+            <a href="#services" class="cta-button">View Our Tools</a>
+        </div>
+    </header>
+
+    <!-- 2. ABOUT BUSINESS -->
+    <section id="about">
+        <div class="section-header">
+            <h2>About Business</h2>
+        </div>
+        <div class="about-box">
+            <p><strong>Agentic Solutions</strong> is a modern software house dedicated to building automated, agent-based systems for educational institutions. We specialize in streamlining administrative workflows so educators can focus on teaching rather than paperwork.</p>
+        </div>
+    </section>
+
+    <!-- 3. PRODUCTS AND SERVICES -->
+    <section id="services" style="background-color: #fcfcfc;">
+        <div class="section-header">
+            <h2>Our Products & Services</h2>
+            <p>Custom-built solutions for schools and universities.</p>
+        </div>
+        <div class="services-container">
+            <!-- Product 1 -->
+            <div class="service-card">
+                <h3>Agentic Grade Calculator</h3>
+                <p>An automated tool that processes student datasets and calculates final grades instantly, eliminating manual entry errors and saving hours of administrative time.</p>
+            </div>
+            <!-- Product 2 -->
+            <div class="service-card">
+                <h3>Student Enrollment System</h3>
+                <p>A comprehensive platform that helps universities manage applications, track student intake, and organize faculty scheduling within a single, unified interface.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. CONTACT INFORMATION -->
+    <section id="contact">
+        <div class="section-header">
+            <h2>Get In Touch</h2>
+            <p>Have questions? Our team is here to help your institution grow.</p>
+        </div>
+        <div class="contact-grid">
+            <div class="contact-item">
+                <strong>Email:</strong><br>
+                <a href="mailto:contact@agenticsolutions.com" style="color: white;">contact@agenticsolutions.com</a>
+            </div>
+            <div class="contact-item">
+                <strong>Phone:</strong><br>
+                +60 12-345 6789
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. BRANDING CONSISTENCY (FOOTER) -->
+    <footer>
+        <p>&copy; 2024 Agentic Solutions. Branding consistent with the business identity.</p>
+    </footer>
+
+</body>
+</html>
