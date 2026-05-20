@@ -3,288 +3,215 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agentic Solutions | Educational Automation</title>
+    <title>Agentic Solutions | Secure Portal</title>
     <style>
-        /* BRANDING & COLOR SCHEME */
         :root {
-            --primary-blue: #0047AB; /* From your logo */
+            --primary-blue: #0047AB; 
             --accent-blue: #0056d2;
             --dark-text: #2c3e50;
-            --light-bg: #f8f9fa;
+            --light-bg: #f4f7fe;
             --white: #ffffff;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        body { background-color: var(--white); color: var(--dark-text); line-height: 1.6; }
+
+        /* AUTHENTICATION OVERLAY */
+        #auth-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--primary-blue); display: flex; justify-content: center;
+            align-items: center; z-index: 2000; transition: 0.5s;
         }
 
-        body {
-            line-height: 1.7;
-            color: var(--dark-text);
-            background-color: var(--white);
-            scroll-behavior: smooth;
+        .auth-card {
+            background: white; padding: 40px; border-radius: 15px;
+            width: 100%; max-width: 400px; box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            text-align: center;
         }
+
+        .auth-card img { height: 60px; margin-bottom: 20px; }
+        .auth-card h2 { margin-bottom: 20px; color: var(--primary-blue); }
+        
+        .auth-card input {
+            width: 100%; padding: 12px; margin-bottom: 15px;
+            border: 1px solid #ddd; border-radius: 8px;
+        }
+
+        .auth-card button {
+            width: 100%; padding: 12px; background: var(--primary-blue);
+            color: white; border: none; border-radius: 8px; cursor: pointer;
+            font-weight: bold; font-size: 1rem;
+        }
+
+        .toggle-link {
+            margin-top: 15px; display: block; font-size: 0.85rem;
+            color: var(--primary-blue); text-decoration: underline; cursor: pointer;
+        }
+
+        /* MAIN CONTENT (Hidden by default) */
+        #main-site { display: none; }
 
         /* NAVIGATION */
         nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem 8%;
-            background: var(--white);
-            box-shadow: 0 2px 15px rgba(0,0,0,0.08);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 1rem 8%; background: var(--white);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 1000;
+        }
+        .logo-area { display: flex; align-items: center; gap: 10px; }
+        .logo-area img { height: 40px; }
+        .brand-name { font-weight: 800; color: var(--primary-blue); }
+        nav ul { display: flex; list-style: none; gap: 20px; }
+        nav ul li a { text-decoration: none; color: var(--dark-text); font-weight: 600; font-size: 0.9rem; }
+
+        /* SYSTEM STYLING */
+        section { padding: 60px 8%; }
+        .system-container { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+        .system-card {
+            background: var(--light-bg); padding: 30px; border-radius: 15px;
+            border-top: 5px solid var(--primary-blue);
         }
 
-        .logo-area {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
+        .result-box { margin-top: 20px; padding: 15px; background: white; border-radius: 8px; display: none; }
+        .enrollment-list { margin-top: 20px; background: white; border-radius: 8px; padding: 10px; max-height: 200px; overflow-y: auto; }
+        
+        /* TEAM SECTION */
+        .team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; }
+        .member { text-align: center; padding: 15px; border: 1px solid #eee; border-radius: 10px; }
+        .member span { display: block; font-size: 0.7rem; color: #888; font-family: monospace; }
 
-        .logo-area img {
-            height: 45px;
-        }
+        footer { text-align: center; padding: 40px; font-size: 0.8rem; color: #777; border-top: 1px solid #eee; }
 
-        .brand-name {
-            font-size: 1.4rem;
-            font-weight: 800;
-            color: var(--primary-blue);
-            letter-spacing: -0.5px;
-        }
-
-        nav ul {
-            display: flex;
-            list-style: none;
-            gap: 30px;
-        }
-
-        nav ul li a {
-            text-decoration: none;
-            color: var(--dark-text);
-            font-weight: 600;
-            font-size: 0.95rem;
-            transition: 0.3s;
-        }
-
-        nav ul li a:hover {
-            color: var(--primary-blue);
-        }
-
-        /* HERO SECTION */
-        .hero {
-            padding: 100px 8% 80px;
-            background: linear-gradient(135deg, #f0f4ff 0%, #ffffff 100%);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            min-height: 70vh;
-        }
-
-        .hero-content {
-            max-width: 600px;
-        }
-
-        .hero h1 {
-            font-size: 3.5rem;
-            line-height: 1.1;
-            margin-bottom: 20px;
-            color: var(--primary-blue);
-        }
-
-        .hero p {
-            font-size: 1.2rem;
-            margin-bottom: 30px;
-            color: #555;
-        }
-
-        .cta-button {
-            padding: 15px 35px;
-            background: var(--primary-blue);
-            color: white;
-            text-decoration: none;
-            border-radius: 8px;
-            font-weight: bold;
-            box-shadow: 0 4px 15px rgba(0, 71, 171, 0.3);
-            transition: 0.3s;
-        }
-
-        .cta-button:hover {
-            background: var(--accent-blue);
-            transform: translateY(-2px);
-        }
-
-        /* ABOUT SECTION */
-        section {
-            padding: 100px 8%;
-        }
-
-        .section-header {
-            text-align: center;
-            margin-bottom: 60px;
-        }
-
-        .section-header h2 {
-            font-size: 2.2rem;
-            color: var(--primary-blue);
-            margin-bottom: 15px;
-        }
-
-        .about-box {
-            background: var(--light-bg);
-            padding: 50px;
-            border-radius: 20px;
-            border-left: 8px solid var(--primary-blue);
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
-        /* PRODUCTS & SERVICES */
-        .services-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-        }
-
-        .service-card {
-            padding: 40px;
-            border: 1px solid #eee;
-            border-radius: 15px;
-            transition: 0.4s;
-            background: white;
-        }
-
-        .service-card:hover {
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            border-color: var(--primary-blue);
-        }
-
-        .service-card h3 {
-            color: var(--primary-blue);
-            margin-bottom: 15px;
-            font-size: 1.5rem;
-        }
-
-        /* CONTACT SECTION */
-        #contact {
-            background: var(--primary-blue);
-            color: white;
-            text-align: center;
-        }
-
-        #contact h2 { color: white; }
-
-        .contact-grid {
-            display: flex;
-            justify-content: center;
-            gap: 50px;
-            margin-top: 30px;
-            flex-wrap: wrap;
-        }
-
-        .contact-item {
-            font-size: 1.1rem;
-        }
-
-        /* FOOTER */
-        footer {
-            padding: 30px;
-            text-align: center;
-            font-size: 0.9rem;
-            color: #888;
-            border-top: 1px solid #eee;
-        }
-
-        /* RESPONSIVE */
-        @media (max-width: 768px) {
-            .hero { flex-direction: column; text-align: center; padding-top: 50px; }
-            nav ul { display: none; } /* Simplified for mobile */
-            .hero h1 { font-size: 2.5rem; }
-        }
+        @media (max-width: 900px) { .system-container { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
 
-    <!-- 1. HEADER: Business Name & Logo -->
-    <nav>
-        <div class="logo-area">
-            <img src="logo.png" alt="Agentic Solutions Logo">
-            <span class="brand-name">Agentic Solutions</span>
-        </div>
-        <ul>
-            <li><a href="#home">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#services">Services</a></li>
-            <li><a href="#contact">Contact</a></li>
-        </ul>
-    </nav>
-
-    <!-- HERO / HOME -->
-    <header class="hero" id="home">
-        <div class="hero-content">
-            <h1>Automating the Future of Education</h1>
-            <p>Empowering educators with intelligent agents that handle the paperwork, so you can handle the teaching.</p>
-            <a href="#services" class="cta-button">View Our Tools</a>
-        </div>
-    </header>
-
-    <!-- 2. ABOUT BUSINESS -->
-    <section id="about">
-        <div class="section-header">
-            <h2>About Business</h2>
-        </div>
-        <div class="about-box">
-            <p><strong>Agentic Solutions</strong> is a modern software house dedicated to building automated, agent-based systems for educational institutions. We specialize in streamlining administrative workflows so educators can focus on teaching rather than paperwork.</p>
-        </div>
-    </section>
-
-    <!-- 3. PRODUCTS AND SERVICES -->
-    <section id="services" style="background-color: #fcfcfc;">
-        <div class="section-header">
-            <h2>Our Products & Services</h2>
-            <p>Custom-built solutions for schools and universities.</p>
-        </div>
-        <div class="services-container">
-            <!-- Product 1 -->
-            <div class="service-card">
-                <h3>Agentic Grade Calculator</h3>
-                <p>An automated tool that processes student datasets and calculates final grades instantly, eliminating manual entry errors and saving hours of administrative time.</p>
+    <!-- SIGN UP / LOGIN OVERLAY -->
+    <div id="auth-overlay">
+        <div class="auth-card">
+            <img src="logo.jpg" alt="Logo">
+            <h2 id="auth-title">Welcome Back</h2>
+            
+            <div id="signup-fields" style="display: none;">
+                <input type="text" placeholder="Full Name">
             </div>
-            <!-- Product 2 -->
-            <div class="service-card">
-                <h3>Student Enrollment System</h3>
-                <p>A comprehensive platform that helps universities manage applications, track student intake, and organize faculty scheduling within a single, unified interface.</p>
-            </div>
+            
+            <input type="email" id="userEmail" placeholder="Email Address">
+            <input type="password" placeholder="Password">
+            
+            <button onclick="login()">Access Systems</button>
+            
+            <span class="toggle-link" id="auth-toggle" onclick="toggleAuth()">Don't have an account? Sign Up</span>
         </div>
-    </section>
+    </div>
 
-    <!-- 4. CONTACT INFORMATION -->
-    <section id="contact">
-        <div class="section-header">
-            <h2>Get In Touch</h2>
-            <p>Have questions? Our team is here to help your institution grow.</p>
-        </div>
-        <div class="contact-grid">
-            <div class="contact-item">
-                <strong>Email:</strong><br>
-                <a href="mailto:contact@agenticsolutions.com" style="color: white;">contact@agenticsolutions.com</a>
+    <!-- MAIN WEBSITE CONTENT -->
+    <div id="main-site">
+        <nav>
+            <div class="logo-area">
+                <img src="logo.jpg" alt="Logo">
+                <span class="brand-name">Agentic Solutions</span>
             </div>
-            <div class="contact-item">
-                <strong>Phone:</strong><br>
-                +60 12-345 6789
+            <ul>
+                <li><a href="#" onclick="logout()">Logout</a></li>
+            </ul>
+        </nav>
+
+        <section id="systems">
+            <div style="text-align: center; margin-bottom: 40px;">
+                <h2 style="color:var(--primary-blue)">University Management Dashboard</h2>
+                <p>Authenticated Session: Active</p>
             </div>
-        </div>
-    </section>
 
-    <!-- 5. BRANDING CONSISTENCY (FOOTER) -->
-    <footer>
-        <p>&copy; 2024 Agentic Solutions. Branding consistent with the business identity.</p>
-    </footer>
+            <div class="system-container">
+                <!-- GRADE CALCULATOR -->
+                <div class="system-card">
+                    <h3>Grade Calculator</h3>
+                    <input type="text" id="calcName" placeholder="Student Name">
+                    <input type="number" id="calcScore" placeholder="Score (0-100)">
+                    <button onclick="calculateGrade()" style="background:var(--primary-blue); color:white; border:none; padding:10px; border-radius:5px; width:100%; cursor:pointer;">Process Grade</button>
+                    <div id="gradeResult" class="result-box">
+                        <h4 id="resName"></h4>
+                        <p>Grade: <strong id="resLetter" style="font-size: 1.5rem; color: var(--primary-blue);"></strong></p>
+                    </div>
+                </div>
 
+                <!-- ENROLLMENT -->
+                <div class="system-card">
+                    <h3>Enrollment System</h3>
+                    <input type="text" id="enrolID" placeholder="Student ID">
+                    <input type="text" id="enrolName" placeholder="Student Name">
+                    <button onclick="enrollStudent()" style="background:var(--primary-blue); color:white; border:none; padding:10px; border-radius:5px; width:100%; cursor:pointer;">Register Student</button>
+                    <div class="enrollment-list" id="enrolList"></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="team">
+            <h2 style="text-align:center; color:var(--primary-blue); margin-bottom:30px;">Our Team</h2>
+            <div class="team-grid">
+                <div class="member"><span>253UT256JW</span><strong>Desmond Choi</strong></div>
+                <div class="member"><span>253UT256KF</span><strong>Lim Yi An</strong></div>
+                <div class="member"><span>253UT256KG</span><strong>David Chong</strong></div>
+                <div class="member"><span>253UT256JV</span><strong>Koh Meng Wen</strong></div>
+                <div class="member"><span>261UT26134</span><strong>Lim See Yuan</strong></div>
+                <div class="member"><span>261UT2612Y</span><strong>Sing Wen Jie</strong></div>
+            </div>
+        </section>
+
+        <footer>
+            <p>&copy; 2024 Agentic Solutions | MMU Project</p>
+        </footer>
+    </div>
+
+    <script>
+        // AUTHENTICATION LOGIC
+        let isLoginView = true;
+
+        function toggleAuth() {
+            isLoginView = !isLoginView;
+            document.getElementById('auth-title').innerText = isLoginView ? "Welcome Back" : "Create Account";
+            document.getElementById('auth-toggle').innerText = isLoginView ? "Don't have an account? Sign Up" : "Already have an account? Login";
+            document.getElementById('signup-fields').style.display = isLoginView ? "none" : "block";
+        }
+
+        function login() {
+            const email = document.getElementById('userEmail').value;
+            if(email === "") {
+                alert("Please enter your credentials");
+                return;
+            }
+            // Transition effect
+            document.getElementById('auth-overlay').style.opacity = "0";
+            setTimeout(() => {
+                document.getElementById('auth-overlay').style.display = "none";
+                document.getElementById('main-site').style.display = "block";
+            }, 500);
+        }
+
+        function logout() {
+            location.reload(); // Simple way to lock the site again
+        }
+
+        // SYSTEM LOGIC
+        function calculateGrade() {
+            const name = document.getElementById('calcName').value;
+            const score = document.getElementById('calcScore').value;
+            let grade = score >= 80 ? "A" : score >= 70 ? "B" : score >= 60 ? "C" : "F";
+            document.getElementById('resName').innerText = name;
+            document.getElementById('resLetter').innerText = grade;
+            document.getElementById('gradeResult').style.display = "block";
+        }
+
+        function enrollStudent() {
+            const id = document.getElementById('enrolID').value;
+            const name = document.getElementById('enrolName').value;
+            const list = document.getElementById('enrolList');
+            const entry = document.createElement('div');
+            entry.innerHTML = `<strong>${id}</strong> - ${name}`;
+            entry.style.padding = "5px";
+            list.prepend(entry);
+        }
+    </script>
 </body>
 </html>
